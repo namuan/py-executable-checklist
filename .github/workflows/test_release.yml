@@ -75,6 +75,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.PERSONAL_GH_TOKEN }}
         with:
           tag_name: ${{ steps.latest_version.outputs.version }}
-          release_name: Release ${{ steps.latest_version.outputs.version }}
+          name: Release ${{ steps.latest_version.outputs.version }}
           body: ${{ steps.changelog.outputs.body }}
           generate_release_notes: true
