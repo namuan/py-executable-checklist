@@ -16,6 +16,9 @@ pre-commit: ## Manually run all precommit hooks
 	pre-commit install
 	pre-commit run --all-files
 
+tests: clean ## Run all tests
+	poetry run pytest -v
+
 bpython: ## Runs bpython
 	bpython
 
