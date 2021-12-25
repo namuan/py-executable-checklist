@@ -119,5 +119,5 @@ make build
 ### Release process
 
 A release is automatically published when a new version is bumped using `make bump`.
-See `.github/workflows/test_release.yml` for more details.
+See `.github/workflows/build.yml` for more details.
 Once the release is published, `.github/workflows/publish.yml` will automatically publish it to PyPI.
