@@ -116,7 +116,7 @@ poetry shell
 make build
 ```
 
-### Development and Release process
+### Release process
 
 A release is automatically published when a new version is bumped using `make bump`.
 See `.github/workflows/test_release.yml` for more details.
