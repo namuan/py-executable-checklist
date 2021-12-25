@@ -116,3 +116,9 @@ poetry shell
 ```sh
 make build
 ```
+
+### Development and Release process
+
+A release is automatically published when a new version is bumped using `make bump`.
+See `.github/workflows/test_release.yml` for more details.
+Once the release is published, `.github/workflows/publish.yml` will automatically publish it to PyPI.
