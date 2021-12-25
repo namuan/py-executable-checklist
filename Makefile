@@ -22,7 +22,7 @@ tests: clean ## Run all tests
 build: pre-commit tests ## Build package
 	poetry build
 
-bump: tests ## Bump version and update changelog
+bump: build ## Bump version and update changelog
 	poetry run cz bump --changelog
 
 bpython: ## Runs bpython
