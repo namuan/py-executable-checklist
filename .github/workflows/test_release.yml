@@ -1,4 +1,4 @@
-name: Test and Draft Release
+name: Test and Release
 
 on:
   pull_request:
@@ -46,7 +46,7 @@ jobs:
           python-version: ${{ matrix.python-version }}
       - run: poetry run pytest
 
-  draft-release:
+  release:
     if: "startsWith(github.event.head_commit.message, 'bump:')"
     runs-on: ubuntu-latest
     steps:
@@ -68,10 +68,10 @@ jobs:
           body="${body//$'\n'/'%0A'}"
           body="${body//$'\r'/'%0D'}"
           echo ::set-output name="body::$body"
-      - name: Create a draft release
+      - name: Create release
         uses: actions/create-release@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.PERSONAL_GH_TOKEN }}
         with:
           tag_name: ${{ steps.latest_version.outputs.version }}
           release_name: Release ${{ steps.latest_version.outputs.version }}
