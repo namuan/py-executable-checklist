@@ -63,11 +63,11 @@ jobs:
         shell: bash
         run: |
           VERSION=${{ steps.latest_version.outputs.version }}
-          RELEASEBODY=$(sed -n '/^## '$VERSION'/,/^##.*)$/p' CHANGELOG.md | sed '$d')
-          RELEASEBODY="${RELEASEBODY//'%'/'%25'}"
-          RELEASEBODY="${RELEASEBODY//$'\n'/'%0A'}"
-          RELEASEBODY="${RELEASEBODY//$'\r'/'%0D'}"
-          echo "::set-env name=body::${RELEASEBODY}"
+          body=$(sed -n '/^## '$VERSION'/,/^##.*)$/p' CHANGELOG.md | sed '$d')
+          body="${body//'%'/'%25'}"
+          body="${body//$'\n'/'%0A'}"
+          body="${body//$'\r'/'%0D'}"
+          echo ::set-output name="body::$body"
       - name: Create a draft release
         uses: actions/create-release@v1
         env:
