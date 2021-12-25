@@ -1,0 +1,18 @@
+{
+  "template": "https://github.com/woltapp/wolt-python-package-cookiecutter",
+  "commit": "b122a6c81160f1d2f98a1c6a27e19c28f6c5406b",
+  "checkout": null,
+  "context": {
+    "cookiecutter": {
+      "author_name": "namuan",
+      "author_email": "github@deskriders.dev",
+      "github_username": "namuan",
+      "project_name": "Executable Workflow",
+      "project_slug": "py-workflow",
+      "package_name": "py_workflow",
+      "project_short_description": "Helper classes to develop executable workflow scripts",
+      "_template": "https://github.com/woltapp/wolt-python-package-cookiecutter"
+    }
+  },
+  "directory": null
+}
