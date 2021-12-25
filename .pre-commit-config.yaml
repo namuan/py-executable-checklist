@@ -47,12 +47,6 @@ repos:
         entry: poetry run flake8
         language: system
         types: [python]
-      - id: kacl-verify
-        name: kacl-verify
-        entry: poetry run kacl-cli verify
-        language: system
-        files: 'CHANGELOG.md'
-        pass_filenames: false
 -   repo: https://github.com/commitizen-tools/commitizen
     rev: v2.20.3
     hooks:
