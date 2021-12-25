@@ -1,0 +1,79 @@
+name: Test and Draft Release
+
+on:
+  pull_request:
+  push:
+    branches:
+      - "**"
+
+jobs:
+  actionlint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Download actionlint
+        run: bash <(curl https://raw.githubusercontent.com/rhysd/actionlint/main/scripts/download-actionlint.bash)
+        shell: bash
+      - name: Check workflow files
+        run: ./actionlint -color
+        shell: bash
+
+  lint-cruft:
+    name: Check if automatic project update was successful
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Fail if .rej files exist as structure update was not successful
+        run: test -z "$(find . -iname '*.rej')"
+
+  pre-commit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ./.github/actions/python-poetry-env
+      - run: poetry run pre-commit run --all-files
+
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: [ "3.7", "3.8", "3.9" ]
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ./.github/actions/python-poetry-env
+        with:
+          python-version: ${{ matrix.python-version }}
+      - run: poetry run pytest
+
+  draft-release:
+    if: "startsWith(github.event.head_commit.message, 'bump:')"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ./.github/actions/python-poetry-env
+      - name: Get latest version
+        id: latest_version
+        shell: bash
+        run: |
+          version=$(poetry version --short)
+          echo ::set-output name="version::$version"
+      - name: Changelog
+        id: changelog
+        shell: bash
+        run: |
+          VERSION=${{ steps.latest_version.outputs.version }}
+          RELEASEBODY=$(sed -n '/^## '$VERSION'/,/^##.*)$/p' CHANGELOG.md | sed '$d')
+          RELEASEBODY="${RELEASEBODY//'%'/'%25'}"
+          RELEASEBODY="${RELEASEBODY//$'\n'/'%0A'}"
+          RELEASEBODY="${RELEASEBODY//$'\r'/'%0D'}"
+          echo "::set-env name=body::${RELEASEBODY}"
+      - name: Create a draft release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ steps.latest_version.outputs.version }}
+          release_name: Release ${{ steps.latest_version.outputs.version }}
+          body: ${{ steps.changelog.outputs.body }}
+          draft: true
