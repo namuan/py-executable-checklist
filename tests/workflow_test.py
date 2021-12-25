@@ -3,7 +3,7 @@ from unittest import mock
 
 import pytest
 
-from py_workflow.workflow import notify_me, run_command
+from py_workflow.workflow import notify_me, run_command, wait_for_enter
 
 
 def test_run_command() -> None:
@@ -30,3 +30,11 @@ def test_notification(mock_subprocess: Any) -> None:
 def test_raise_error_if_missing_config() -> None:
     with pytest.raises(KeyError):
         notify_me("hello world", {})
+
+
+@mock.patch("builtins.input")
+def test_input_prompt(mock_input: Any) -> None:
+    wait_for_enter()
+
+    assert mock_input.called
+    mock_input.assert_called_with("Press Enter to continue: ")

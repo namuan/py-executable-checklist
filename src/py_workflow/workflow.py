@@ -15,3 +15,7 @@ def notify_me(msg: str, pushover_config: dict) -> None:
         run_command(
             f"curl -s -F 'token={pushover_token}' -F 'user={pushover_user}' -F 'message={msg}' {pushover_url}"
         )
+
+
+def wait_for_enter() -> None:
+    input("Press Enter to continue: ")
