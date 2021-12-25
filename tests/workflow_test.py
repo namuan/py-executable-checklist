@@ -3,7 +3,7 @@ from unittest import mock
 
 import pytest
 
-from py_workflow.workflow import notify_me, run_command, wait_for_enter
+from py_executable_checklist.workflow import notify_me, run_command, wait_for_enter
 
 
 def test_run_command() -> None:

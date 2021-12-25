@@ -1,5 +1,5 @@
 site_name: Executable Workflow
-repo_url: https://github.com/namuan/py-workflow
+repo_url: https://github.com/namuan/py-executable-checklist
 
 theme:
   name: material
@@ -32,4 +32,4 @@ plugins:
             show_signature_annotations: true
             show_source: true
       watch:
-        - src/py_workflow
+        - src/py_executable_checklist

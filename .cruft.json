@@ -7,10 +7,10 @@
       "author_name": "namuan",
       "author_email": "github@deskriders.dev",
       "github_username": "namuan",
-      "project_name": "Executable Workflow",
-      "project_slug": "py-workflow",
-      "package_name": "py_workflow",
-      "project_short_description": "Helper classes to develop executable workflow scripts",
+      "project_name": "Helper classes for building executable checklist",
+      "project_slug": "py-executable-checklist",
+      "package_name": "py_executable_checklist",
+      "project_short_description": "Helper classes to develop executable checklist scripts",
       "_template": "https://github.com/woltapp/wolt-python-package-cookiecutter"
     }
   },

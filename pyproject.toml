@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "py-workflow"
+name = "py-executable-checklist"
 version = "0.4.0"
 description = "Helper classes to develop executable workflow scripts"
 authors = [
@@ -8,9 +8,9 @@ authors = [
 license = "MIT"
 readme = "README.md"
 
-documentation = "https://namuan.github.io/py-workflow"
-homepage = "https://namuan.github.io/py-workflow"
-repository = "https://github.com/namuan/py-workflow"
+documentation = "https://namuan.github.io/py-executable-checklist"
+homepage = "https://namuan.github.io/py-executable-checklist"
+repository = "https://github.com/namuan/py-executable-checklist"
 
 classifiers = [
   "Development Status :: 4 - Beta",
@@ -26,7 +26,7 @@ classifiers = [
 ]
 
 packages = [
-    { include = "py_workflow", from = "src" }
+    { include = "py_executable_checklist", from = "src" }
 ]
 
 [tool.poetry.dependencies]
@@ -79,7 +79,7 @@ include = '\.pyi?$'
 
 [tool.pytest.ini_options]
 addopts = """\
-    --cov py_workflow \
+    --cov py_executable_checklist \
     --cov tests \
     --cov-report term-missing \
     --no-cov-on-fail \
