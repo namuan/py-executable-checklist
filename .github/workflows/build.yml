@@ -1,4 +1,4 @@
-name: Test and Release
+name: Build and Release
 
 on:
   pull_request:
