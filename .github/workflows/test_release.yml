@@ -76,4 +76,3 @@ jobs:
           tag_name: ${{ steps.latest_version.outputs.version }}
           release_name: Release ${{ steps.latest_version.outputs.version }}
           body: ${{ steps.changelog.outputs.body }}
-          draft: true
