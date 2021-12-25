@@ -1,15 +1,13 @@
 name: Draft a release
 
 on:
-  workflow_dispatch:
-    inputs:
-      version:
-        description: 'The version number (e.g. 1.2.3) OR one of: patch|minor|major|prepatch|preminor|premajor|prerelease'
-        required: true
-        default: 'patch'
+  push:
+    branches:
+      - "**"
 
 jobs:
   draft-release:
+    if: "startsWith(github.event.head_commit.message, 'bump:')"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -21,26 +19,12 @@ jobs:
           poetry version ${{ github.event.inputs.version }}
           version=$(poetry version --short)
           echo ::set-output name="version::$version"
-      - name: Update changelog
+      - name: Changelog
         id: changelog
         shell: bash
         run: |
-          poetry run kacl-cli release ${{ steps.updated_version.outputs.version }} --modify --auto-link
-          echo "" >> CHANGELOG.md
-          body=$(poetry run kacl-cli get ${{ steps.updated_version.outputs.version }})
-          body="${body//'%'/'%25'}"
-          body="${body//$'\n'/'%0A'}"
-          body="${body//$'\r'/'%0D'}"
+          body=$(cat CHANGELOG.md)
           echo ::set-output name="body::$body"
-      - name: Commit changes
-        uses: EndBug/add-and-commit@v7
-        with:
-          add: 'CHANGELOG.md pyproject.toml'
-          message: 'Release ${{ steps.updated_version.outputs.version }}'
-      - name: Create tag
-        run: |
-          git tag ${{ steps.updated_version.outputs.version }}
-          git push origin ${{ steps.updated_version.outputs.version }}
       - name: Create a draft release
         uses: actions/create-release@v1
         env:
