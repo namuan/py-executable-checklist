@@ -1,4 +1,5 @@
 import logging
+import os
 import subprocess
 
 
@@ -19,3 +20,31 @@ def notify_me(msg: str, pushover_config: dict) -> None:
 
 def wait_for_enter() -> None:
     input("Press Enter to continue: ")
+
+
+def __run_step(step: type, context: dict) -> None:
+    step_instance = step(context, step)
+    logging.info("%s ➡️ %s", step.__name__, step_instance.__doc__)
+    if context.get("verbose"):
+        logging.info(context)
+    step_instance.run(context)
+    logging.info("-" * 100)
+
+
+def run_workflow(context: dict, workflow_process: list) -> None:
+    for step in workflow_process:
+        __run_step(step, context)
+    logging.info("Done.")
+
+
+class WorkflowBase:
+    def __init__(self, context: dict, step: type) -> None:
+        has_vars = vars(step).get("__annotations__")
+        if has_vars:
+            step_vars = has_vars.keys()
+            try:
+                for step_var in step_vars:
+                    setattr(self, step_var, context[step_var])
+            except KeyError as e:
+                error_msg = f"Unable to find variable: {str(e)}  in workflow class: {step.__name__}{os.linesep}Available keys in context: {context.keys()}"
+                raise ValueError(error_msg)
