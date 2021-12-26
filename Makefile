@@ -9,7 +9,8 @@ setup: ## Setup Virtual Env
 	poetry install
 
 deps: ## Install/Update dependencies
-	poetry update
+	poetry lock
+	poetry run pre-commit autoupdate
 
 clean: ## Clean package
 	find . -type d -name '__pycache__' | xargs rm -rf
