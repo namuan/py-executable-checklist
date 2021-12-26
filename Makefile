@@ -18,7 +18,7 @@ clean: ## Clean package
 pre-commit: ## Manually run all precommit hooks
 	poetry run pre-commit run --all-files
 
-tests: ## Run all tests
+tests: clean ## Run all tests
 	poetry run ward
 
 build: pre-commit tests ## Build package
