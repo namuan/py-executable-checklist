@@ -1,7 +1,8 @@
-from typing import Any
+from typing import Any, Generator
 from unittest import mock
 
 import pytest
+from ward import fixture, test
 
 from py_executable_checklist.workflow import (
     WorkflowBase,
@@ -12,13 +13,20 @@ from py_executable_checklist.workflow import (
 )
 
 
+@test("Should run given command")
 def test_run_command() -> None:
     cmd = "echo 'hello world'"
     run_command(cmd)
 
 
-@mock.patch("subprocess.check_output")
-def test_notification(mock_subprocess: Any) -> None:
+@fixture
+def mock_subprocess() -> Any:
+    with mock.patch("subprocess.check_output") as mock_run:
+        yield mock_run
+
+
+@test("Should send notification via PushOver")
+def test_send_notification(mock_subprocess: Any = mock_subprocess) -> None:
     pushover_config = {
         "pushover_url": "http://localhost:8080/",
         "pushover_token": "dummy_token",
@@ -33,20 +41,33 @@ def test_notification(mock_subprocess: Any) -> None:
     )
 
 
-def test_raise_error_if_missing_config() -> None:
+@test("Should raise error if missing PushOver config")
+def test_raise_error_for_missing_config() -> None:
     with pytest.raises(KeyError):
         notify_me("hello world", {})
 
 
-@mock.patch("builtins.input")
-def test_input_prompt(mock_input: Any) -> None:
+@fixture
+def mock_input() -> Generator:
+    with mock.patch("builtins.input") as mock_input:
+        yield mock_input
+
+
+@test("Should wait for user input")
+def test_wait_for_user_input(mock_input: Any = mock_input) -> None:
     wait_for_enter()
 
     assert mock_input.called
     mock_input.assert_called_with("Press Enter to continue: ")
 
 
+@test("Should run workflow")
 def test_run_workflow() -> None:
+    context = {
+        "username": "dummy_user",
+        "verbose": True,
+    }
+
     class SimpleStep(WorkflowBase):
         """Step documentation"""
 
@@ -56,20 +77,21 @@ def test_run_workflow() -> None:
             pass
 
     workflow_steps = [SimpleStep]
-    context = {
-        "username": "dummy_user",
-        "verbose": True,
-    }
+
     run_workflow(context, workflow_steps)
 
 
-def test_run_workflow_with_missing_variable_mapping() -> None:
-    class MissingVariableToMapStep(WorkflowBase):
-        missing_var: str  # anything not available in context will raise an error
-
-    workflow_steps = [MissingVariableToMapStep]
+@test("Should raise error if workflow has a variable missing from context")
+def test_raise_error_for_missing_variable() -> None:
     context = {
         "verbose": True,
     }
+
+    class MissingVariableToMapStep(WorkflowBase):
+        verbose: bool
+        missing_var: str  # missing in context so will raise an error
+
+    workflow_steps = [MissingVariableToMapStep]
+
     with pytest.raises(ValueError):
         run_workflow(context, workflow_steps)

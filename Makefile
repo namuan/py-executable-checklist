@@ -16,11 +16,10 @@ clean: ## Clean package
 	rm -rf build dist
 
 pre-commit: ## Manually run all precommit hooks
-	pre-commit install
-	pre-commit run --all-files
+	poetry run pre-commit run --all-files
 
-tests: clean ## Run all tests
-	poetry run pytest -v
+tests: ## Run all tests
+	poetry run ward
 
 build: pre-commit tests ## Build package
 	poetry build
