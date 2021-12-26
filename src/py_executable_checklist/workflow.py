@@ -5,7 +5,7 @@ import subprocess
 
 def run_command(command: str) -> str:
     logging.info("⚡ %s", command)
-    return subprocess.check_output(command, shell=True).decode("utf-8")
+    return subprocess.check_output(command, shell=True).decode("utf-8")  # nosemgrep
 
 
 def notify_me(msg: str, pushover_config: dict) -> None:

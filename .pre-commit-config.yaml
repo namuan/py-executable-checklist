@@ -52,3 +52,14 @@ repos:
     hooks:
       - id: commitizen
         stages: [commit-msg]
+-   repo: https://github.com/returntocorp/semgrep
+    rev: 'v0.77.0'
+    hooks:
+      - id: semgrep
+        name: Semgrep Python
+        types: [python]
+        args: ['--config', 'p/python', '--error']
+      - id: semgrep
+        name: Semgrep Bandit
+        types: [python]
+        args: ['--config', 'p/bandit', '--error']
