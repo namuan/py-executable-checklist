@@ -2,6 +2,9 @@ export PROJECTNAME=$(shell basename "$(PWD)")
 
 .SILENT: ;               # no need for @
 
+init-template: ## Clean up directories so that it can be used for the new project
+	rm -rf .git .idea .venv .mypy_cache .pytest_cache .cruft.json .coverage
+
 setup: ## Setup Virtual Env
 	poetry install
 
