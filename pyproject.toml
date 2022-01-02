@@ -75,13 +75,13 @@ profile = "black"
 src_paths = ["src", "tests"]
 
 [tool.black]
+line-length = 120
 target-version = ["py37", "py38", "py39"]
 include = '\.pyi?$'
 
 [tool.pytest.ini_options]
 addopts = """\
     --cov py_executable_checklist \
-    --cov tests \
     --cov-report term-missing \
     --no-cov-on-fail \
 """
@@ -89,9 +89,12 @@ addopts = """\
 [tool.coverage.report]
 fail_under = 100
 exclude_lines = [
-    'if TYPE_CHECKING:',
     'pragma: no cover'
 ]
+
+[tool.ward]
+order = "random"
+capture-output = false
 
 [tool.mypy]
 disallow_any_unimported = true

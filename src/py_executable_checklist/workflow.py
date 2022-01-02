@@ -13,9 +13,7 @@ def notify_me(msg: str, pushover_config: dict) -> None:
     pushover_token = pushover_config["pushover_token"]
     pushover_user = pushover_config["pushover_user"]
     if pushover_url and pushover_token and pushover_user:
-        run_command(
-            f"curl -s -F 'token={pushover_token}' -F 'user={pushover_user}' -F 'message={msg}' {pushover_url}"
-        )
+        run_command(f"curl -s -F 'token={pushover_token}' -F 'user={pushover_user}' -F 'message={msg}' {pushover_url}")
 
 
 def wait_for_enter() -> None:

@@ -2,8 +2,8 @@ export PROJECTNAME=$(shell basename "$(PWD)")
 
 .SILENT: ;               # no need for @
 
-init-template: ## Clean up directories so that it can be used for the new project
-	rm -rf .git .idea .venv .mypy_cache .pytest_cache .cruft.json .coverage
+new-project: ## Instruction to setup a new project. Run ./init-new-project.sh NEW_PROJECT_NAME
+	echo "Run ./init-new-project.sh NEW_PROJECT_NAME"
 
 setup: ## Setup Virtual Env
 	poetry install
@@ -14,13 +14,22 @@ deps: ## Install/Update dependencies
 
 clean: ## Clean package
 	find . -type d -name '__pycache__' | xargs rm -rf
+	find . -type d -name '.temp' | xargs rm -rf
+	find . -type f -name '.coverage' | xargs rm -rf
 	rm -rf build dist
 
-pre-commit: ## Manually run all precommit hooks
+comby: ## Generic rules (required comby https://comby.dev/docs/)
+	comby 'print(:[1])' 'logging.info(:[1])' -directory 'src' -extensions 'py' -in-place
+
+pre-commit: comby ## Manually run all precommit hooks
 	poetry run pre-commit run --all-files
 
+pre-commit-tool: ## Manually run a single pre-commit hook
+	poetry run pre-commit run $(TOOL) --all-files
+
 tests: clean ## Run all tests
-	poetry run ward
+	poetry run coverage run -m ward
+	poetry run coverage xml -i
 
 build: pre-commit tests ## Build package
 	poetry build
