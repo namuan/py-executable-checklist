@@ -36,7 +36,6 @@ from py_executable_checklist.workflow import run_workflow, WorkflowBase
 
 # Workflow steps
 
-
 class DoSomething(WorkflowBase):
     """
     Go to this page
@@ -47,11 +46,11 @@ class DoSomething(WorkflowBase):
 
     username: str
 
-    def run(self, context):
+    def execute(self):
         logging.info(f"Hello {self.username}")
 
         # output
-        context["greetings"] = f"Hello {context['username']}"
+        return {"greetings": f"Hello {self.username}"}
 
 
 # Workflow definition
@@ -96,8 +95,8 @@ if __name__ == "__main__":
 
 * Clone this repository
 * Requirements:
-  * [Poetry](https://python-poetry.org/)
-  * Python 3.7+
+    * [Poetry](https://python-poetry.org/)
+    * Python 3.7+
 * Create a virtual environment and install the dependencies
 
 ```sh
@@ -118,6 +117,5 @@ make build
 
 ### Release process
 
-A release is automatically published when a new version is bumped using `make bump`.
-See `.github/workflows/build.yml` for more details.
-Once the release is published, `.github/workflows/publish.yml` will automatically publish it to PyPI.
+A release is automatically published when a new version is bumped using `make bump`. See `.github/workflows/build.yml`
+for more details. Once the release is published, `.github/workflows/publish.yml` will automatically publish it to PyPI.

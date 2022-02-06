@@ -25,8 +25,15 @@ def __run_step(step: type, context: dict) -> None:
     logging.info("%s ➡️ %s", step.__name__, step_instance.__doc__)
     if context.get("verbose"):
         logging.info(context)
-    step_instance.run(context)
+
+    returned_context = {}
+    if hasattr(step_instance, "execute"):
+        returned_context = step_instance.execute()
+    else:
+        step_instance.run(context)
+
     logging.info("-" * 100)
+    return context.update(returned_context)
 
 
 def run_workflow(context: dict, workflow_process: list) -> None:

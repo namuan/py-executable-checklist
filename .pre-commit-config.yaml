@@ -1,4 +1,4 @@
-fail_fast: true
+fail_fast: false
 repos:
 -   repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.1.0
@@ -33,7 +33,7 @@ repos:
         types: [python]
       - id: pyupgrade
         name: pyupgrade
-        entry: pyupgrade --py37-plus
+        entry: pyupgrade --py37-plus --keep-runtime-typing
         language: system
         types: [python]
       - id: mypy

@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from collections.abc import Generator
-from typing import Any
+from typing import Any, Optional
 from unittest import mock
 
 import pytest
@@ -64,8 +64,8 @@ def test_wait_for_user_input(mock_input: Any = mock_input) -> None:
     mock_input.assert_called_with("Press Enter to continue: ")
 
 
-@test("Should run workflow")
-def test_run_workflow() -> None:
+@test("Should run workflow and update context inside step")
+def test_run_workflow_with_context() -> None:
     context = {
         "username": "dummy_user",
         "verbose": True,
@@ -76,14 +76,35 @@ def test_run_workflow() -> None:
 
         username: str  # automatically set by the workflow
 
+        # DEPRECATED: use `execute` instead and return a dict to update the context
         def run(self, context: dict) -> None:
-            context["ret_value"] = "passed"
+            context["ret_value"] = f"Hello {self.username}"
 
     workflow_steps = [SimpleStep]
 
     run_workflow(context, workflow_steps)
 
-    assert context["ret_value"] == "passed"
+    assert context["ret_value"] == "Hello dummy_user"
+
+
+@test("Should run workflow and update context with returned value")
+def test_run_workflow_update_returned_context() -> None:
+    context = {"username": "dummy_user"}
+
+    class SimpleStep(WorkflowBase):
+        """Step documentation"""
+
+        username: str  # automatically set by the workflow
+
+        def execute(self) -> Optional[dict]:
+            # This returned value will be merged into the context
+            return {"ret_value": f"Hello {self.username}"}
+
+    workflow_steps = [SimpleStep]
+
+    run_workflow(context, workflow_steps)
+
+    assert context["ret_value"] == "Hello dummy_user"
 
 
 @test("Should raise error if workflow has a variable missing from context")
