@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "py-executable-checklist"
-version = "0.10.1"
+version = "0.10.2"
 description = "Helper classes to develop executable workflow scripts"
 authors = [
     "namuan <github@deskriders.dev>",
@@ -59,7 +59,7 @@ ward = "^0.65.0-beta.0"
 
 [tool.commitizen]
 name = "cz_conventional_commits"
-version = "0.10.1"
+version = "0.10.2"
 tag_format = "$version"
 version_files = [
     "pyproject.toml:version",
