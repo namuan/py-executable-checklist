@@ -64,7 +64,7 @@ def test_wait_for_user_input(mock_input: Any = mock_input) -> None:
     mock_input.assert_called_with("Press Enter to continue: ")
 
 
-@test("Should run workflow and update context inside step")
+@test("Should run workflow")
 def test_run_workflow_with_context() -> None:
     context = {
         "username": "dummy_user",
@@ -76,15 +76,15 @@ def test_run_workflow_with_context() -> None:
 
         username: str  # automatically set by the workflow
 
-        # DEPRECATED: use `execute` instead and return a dict to update the context
-        def run(self, context: dict) -> None:
-            context["ret_value"] = f"Hello {self.username}"
+        def execute(self) -> None:
+            pass
 
     workflow_steps = [SimpleStep]
 
     run_workflow(context, workflow_steps)
 
-    assert context["ret_value"] == "Hello dummy_user"
+    assert context.get("ret_value") is None
+    assert context.get("username") == "dummy_user"
 
 
 @test("Should run workflow and update context with returned value")
