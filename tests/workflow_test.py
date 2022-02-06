@@ -77,11 +77,13 @@ def test_run_workflow() -> None:
         username: str  # automatically set by the workflow
 
         def run(self, context: dict) -> None:
-            pass
+            context["ret_value"] = "passed"
 
     workflow_steps = [SimpleStep]
 
     run_workflow(context, workflow_steps)
+
+    assert context["ret_value"] == "passed"
 
 
 @test("Should raise error if workflow has a variable missing from context")
