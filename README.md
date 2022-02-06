@@ -29,7 +29,7 @@ pip install py-executable-checklist
 import logging
 from argparse import ArgumentParser, RawDescriptionHelpFormatter
 
-from py_executable_checklist import run_workflow, WorkflowBase
+from py_executable_checklist.workflow import run_workflow, WorkflowBase
 
 
 # Common functions across steps
