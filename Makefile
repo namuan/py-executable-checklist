@@ -21,7 +21,7 @@ clean: ## Clean package
 comby: ## Generic rules (required comby https://comby.dev/docs/)
 	comby 'print(:[1])' 'logging.info(:[1])' -directory 'src' -extensions 'py' -in-place
 
-pre-commit: comby ## Manually run all precommit hooks
+pre-commit: ## Manually run all precommit hooks
 	poetry run pre-commit run --all-files
 
 pre-commit-tool: ## Manually run a single pre-commit hook
