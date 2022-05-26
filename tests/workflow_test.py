@@ -134,3 +134,29 @@ def test_ignore_private_variables() -> None:
     workflow_steps = [PrivateVariableStep]
 
     run_workflow({}, workflow_steps)
+
+
+@test("Should support defining sub(child) workflows from within a step definition")
+def test_support_for_sub_workflows() -> None:
+    context: dict = {}
+
+    class ChildWorkflowStep1(WorkflowBase):
+        def execute(self) -> dict:
+            return {"child1": "Child 1 was here"}
+
+    class ChildWorkflowStep2(WorkflowBase):
+        child1: str
+
+        def execute(self) -> dict:
+            return {"child2": self.child1 + ", Child 2 was here too"}
+
+    class ParentWorkflowStep(WorkflowBase):
+        def execute(self) -> None:
+            sub_workflow_steps = [ChildWorkflowStep1, ChildWorkflowStep2]
+            run_workflow(self.context, sub_workflow_steps)
+
+    workflow_steps = [ParentWorkflowStep]
+    run_workflow(context, workflow_steps)
+
+    assert context["child1"] == "Child 1 was here"
+    assert context["child2"] == "Child 1 was here, Child 2 was here too"

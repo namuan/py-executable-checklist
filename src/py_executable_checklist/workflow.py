@@ -3,6 +3,7 @@ import os
 import subprocess
 
 
+# TODO: Move to common module
 def run_command(command: str) -> str:
     logging.info("⚡ %s", command)
     return subprocess.check_output(command, shell=True).decode("utf-8")  # nosemgrep
@@ -48,3 +49,5 @@ class WorkflowBase:
             except KeyError as e:
                 error_msg = f"Unable to find variable: {str(e)}  in workflow class: {step.__name__}{os.linesep}Available keys in context: {context.keys()}"
                 raise ValueError(error_msg)
+
+        self.context = context
