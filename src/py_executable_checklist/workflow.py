@@ -41,7 +41,7 @@ class WorkflowBase:
     def __init__(self, context: dict, step: type) -> None:
         has_vars = vars(step).get("__annotations__")
         if has_vars:
-            step_vars = has_vars.keys()
+            step_vars = [f for f in has_vars.keys() if not f.startswith("_")]
             try:
                 for step_var in step_vars:
                     setattr(self, step_var, context[step_var])

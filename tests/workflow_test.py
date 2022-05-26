@@ -121,3 +121,16 @@ def test_raise_error_for_missing_variable() -> None:
 
     with pytest.raises(ValueError):
         run_workflow(context, workflow_steps)
+
+
+@test("Should ignore any private variables defined inside step definition")
+def test_ignore_private_variables() -> None:
+    class PrivateVariableStep(WorkflowBase):
+        _this_is_a_private_var: str
+
+        def execute(self) -> None:
+            pass
+
+    workflow_steps = [PrivateVariableStep]
+
+    run_workflow({}, workflow_steps)
