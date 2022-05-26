@@ -62,10 +62,10 @@ repos:
     rev: v0.0.17
     hooks:
       - id: shellcheck
--   repo: https://github.com/returntocorp/semgrep
-    rev: 'v0.90.0'
-    hooks:
-      - id: semgrep
-        name: Semgrep Python / Bandit
-        types: [ python ]
-        args: [ '--config', 'p/python', '--config', 'p/bandit', '--error' ]
+#-   repo: https://github.com/returntocorp/semgrep
+#    rev: 'v0.90.0'
+#    hooks:
+#      - id: semgrep
+#        name: Semgrep Python / Bandit
+#        types: [ python ]
+#        args: [ '--config', 'p/python', '--config', 'p/bandit', '--error' ]
