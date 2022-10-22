@@ -13,16 +13,16 @@ homepage = "https://namuan.github.io/py-executable-checklist"
 repository = "https://github.com/namuan/py-executable-checklist"
 
 classifiers = [
-  "Development Status :: 4 - Beta",
-  "Intended Audience :: Developers",
-  "Operating System :: OS Independent",
-  "Programming Language :: Python",
-  "Programming Language :: Python :: 3",
-  "Programming Language :: Python :: 3.7",
-  "Programming Language :: Python :: 3.8",
-  "Programming Language :: Python :: 3.9",
-  "Topic :: Software Development :: Libraries :: Python Modules",
-  "Typing :: Typed",
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Typing :: Typed",
 ]
 
 packages = [
@@ -54,7 +54,6 @@ python-kacl = "*"
 pyupgrade = "*"
 tryceratops = "*"
 commitizen = "^2.20.3"
-ward = "^0.65.0-beta.0"
 
 
 [tool.commitizen]
@@ -91,10 +90,6 @@ fail_under = 100
 exclude_lines = [
     'pragma: no cover'
 ]
-
-[tool.ward]
-order = "random"
-capture-output = false
 
 [tool.mypy]
 disallow_any_unimported = true

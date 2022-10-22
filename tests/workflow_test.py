@@ -1,11 +1,9 @@
 from __future__ import annotations
 
-from collections.abc import Generator
 from typing import Any, Optional
 from unittest import mock
 
 import pytest
-from ward import fixture, test
 
 from py_executable_checklist.workflow import (
     WorkflowBase,
@@ -16,20 +14,13 @@ from py_executable_checklist.workflow import (
 )
 
 
-@test("Should run given command")
 def test_run_command() -> None:
     cmd = "echo 'hello world'"
     run_command(cmd)
 
 
-@fixture
-def mock_subprocess() -> Any:
-    with mock.patch("subprocess.check_output") as mock_run:
-        yield mock_run
-
-
-@test("Should send notification via PushOver")
-def test_send_notification(mock_subprocess: Any = mock_subprocess) -> None:
+@mock.patch("subprocess.check_output")
+def test_send_notification(mock_subprocess: Any) -> None:
     pushover_config = {
         "pushover_url": "http://localhost:8080/",
         "pushover_token": "dummy_token",
@@ -44,27 +35,19 @@ def test_send_notification(mock_subprocess: Any = mock_subprocess) -> None:
     )
 
 
-@test("Should raise error if missing PushOver config")
 def test_raise_error_for_missing_config() -> None:
     with pytest.raises(KeyError):
         notify_me("hello world", {})
 
 
-@fixture
-def mock_input() -> Generator:
-    with mock.patch("builtins.input") as mock_input:
-        yield mock_input
-
-
-@test("Should wait for user input")
-def test_wait_for_user_input(mock_input: Any = mock_input) -> None:
+@mock.patch("builtins.input")
+def test_wait_for_user_input(mock_input: Any) -> None:
     wait_for_enter()
 
     assert mock_input.called
     mock_input.assert_called_with("Press Enter to continue: ")
 
 
-@test("Should run workflow")
 def test_run_workflow_with_context() -> None:
     context = {
         "username": "dummy_user",
@@ -87,7 +70,6 @@ def test_run_workflow_with_context() -> None:
     assert context.get("username") == "dummy_user"
 
 
-@test("Should run workflow and update context with returned value")
 def test_run_workflow_update_returned_context() -> None:
     context = {"username": "dummy_user"}
 
@@ -107,7 +89,6 @@ def test_run_workflow_update_returned_context() -> None:
     assert context["ret_value"] == "Hello dummy_user"
 
 
-@test("Should raise error if workflow has a variable missing from context")
 def test_raise_error_for_missing_variable() -> None:
     context = {
         "verbose": True,
@@ -123,7 +104,6 @@ def test_raise_error_for_missing_variable() -> None:
         run_workflow(context, workflow_steps)
 
 
-@test("Should ignore any private variables defined inside step definition")
 def test_ignore_private_variables() -> None:
     class PrivateVariableStep(WorkflowBase):
         _this_is_a_private_var: str
@@ -136,7 +116,6 @@ def test_ignore_private_variables() -> None:
     run_workflow({}, workflow_steps)
 
 
-@test("Should support defining sub(child) workflows from within a step definition")
 def test_support_for_sub_workflows() -> None:
     context: dict = {}
 

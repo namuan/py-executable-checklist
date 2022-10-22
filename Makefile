@@ -28,7 +28,7 @@ pre-commit-tool: ## Manually run a single pre-commit hook
 	poetry run pre-commit run $(TOOL) --all-files
 
 tests: clean ## Run all tests
-	poetry run coverage run -m ward
+	poetry run pytest
 	poetry run coverage xml -i
 
 build: pre-commit tests ## Build package
