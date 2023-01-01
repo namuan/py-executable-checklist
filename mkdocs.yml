@@ -15,7 +15,6 @@ theme:
 
 nav:
   - Introduction: 'index.md'
-  - api_docs.md
   - changelog.md
 
 markdown_extensions:
@@ -24,12 +23,3 @@ markdown_extensions:
 
 plugins:
   - search:
-  - mkdocstrings:
-      default_handler: python
-      handlers:
-        python:
-          rendering:
-            show_signature_annotations: true
-            show_source: true
-      watch:
-        - src/py_executable_checklist
