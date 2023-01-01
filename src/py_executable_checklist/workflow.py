@@ -24,8 +24,7 @@ def wait_for_enter() -> None:
 def __run_step(step: type, context: dict) -> None:
     step_instance = step(context, step)
     logging.info("%s ➡️ %s", step.__name__, step_instance.__doc__)
-    if context.get("verbose"):
-        logging.info(context)
+    logging.debug(context)
 
     returned_context = step_instance.execute() or {}
     logging.info("-" * 100)
