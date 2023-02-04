@@ -23,7 +23,7 @@ def wait_for_enter() -> None:
 
 def __run_step(step: type, context: dict) -> None:
     step_instance = step(context, step)
-    logging.info("%s ➡️ %s", step.__name__, step_instance.__doc__)
+    logging.info("%s ➡️ %s", step.__name__, step_instance.__doc__.strip() if step_instance.__doc__ else "")
     logging.debug(context)
 
     returned_context = step_instance.execute() or {}
